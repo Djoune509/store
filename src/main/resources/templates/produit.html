@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un produit - Djoune Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; }
+        .navbar { border-bottom: 3px solid #ff4757; }
+        .form-card { 
+            background: white; 
+            border-radius: 20px; 
+            padding: 40px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        .btn-save { 
+            background-color: #ff4757; 
+            border: none; 
+            padding: 12px; 
+            font-weight: 600; 
+            transition: 0.3s;
+        }
+        .btn-save:hover { background-color: #e84118; transform: scale(1.02); }
+        .form-label { font-weight: 600; color: #2f3542; }
+        .input-group-text { background-color: #ff4757; color: white; border: none; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/"><i class="fas fa-shopping-bag me-2"></i>Djoune Store</a>
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="/"><i class="fas fa-arrow-left me-1"></i>Retour au Magasin</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="form-card">
+                <h2 class="text-center fw-bold mb-4">
+                    <i class="fas fa-plus-circle text-danger me-2"></i>Nouveau Produit
+                </h2>
+                
+                <form th:action="@{/produits/save}" th:object="${produit}" method="post">
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Désignation du produit</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                            <input type="text" th:field="*{nom}" class="form-control" placeholder="Ex: Chemise Slim Fit" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Prix ($)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
+                                <input type="number" step="0.01" th:field="*{prix}" class="form-control" placeholder="0.00" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Catégorie</label>
+                            <select th:field="*{categorie}" class="form-select">
+                                <option value="Homme">Homme</option>
+                                <option value="Femme">Femme</option>
+                                <option value="Accessoire">Accessoire</option>
+                                <option value="Vêtement">Vêtement</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Taille (Size)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-ruler-combined"></i></span>
+                                <input type="text" th:field="*{size}" class="form-control" placeholder="Ex: M, L, XL, 42">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Couleur(s)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-palette"></i></span>
+                                <input type="text" th:field="*{couleur}" class="form-control" placeholder="Ex: Noir, Rouge">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Nom du fichier image (avec extension)</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-image"></i></span>
+                            <input type="text" th:field="*{imageNom}" class="form-control" placeholder="Ex: chemise_blanche.jpg">
+                        </div>
+                        <small class="text-muted">Le fichier doit être présent dans le dossier <strong>static/images/</strong>.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-save w-100 shadow">
+                        <i class="fas fa-check-circle me-2"></i>Enregistrer dans le Stock
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="text-center py-4 text-muted">
+    <p>&copy; 2026 Djoune Store - Panel Administration</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

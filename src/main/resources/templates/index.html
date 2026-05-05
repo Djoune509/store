@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Djoune Store | Fashion & Accessories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; }
+        .navbar { border-bottom: 3px solid #ff4757; }
+        .hero-section { 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1350&q=80'); 
+            background-size: cover;
+            background-position: center;
+            color: white; 
+            padding: 100px 0; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .card { 
+            border: none; 
+            transition: transform 0.3s; 
+            border-radius: 15px; 
+            overflow: hidden; 
+        }
+        .card:hover { transform: translateY(-10px); }
+        .card-img-top { height: 280px; object-fit: cover; }
+        .price-tag { color: #ff4757; font-size: 1.25rem; font-weight: 600; }
+        .btn-primary { background-color: #ff4757; border: none; padding: 10px 20px; }
+        .btn-primary:hover { background-color: #e84118; }
+        footer { background: #2f3542; color: white; padding: 30px 0; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/"><i class="fas fa-shopping-bag me-2"></i>Djoune Store</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="/">Accueil</a></li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-light ms-lg-3 px-3" th:href="@{/produits/nouveau}">
+                        <i class="fas fa-plus-circle me-1"></i> Ajouter un Produit
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-3 fw-bold">Welcome to Djoune Store</h1>
+        <p class="lead italic">Accessoires Homme et Femme aux meilleurs prix.</p>
+        <a href="#katalòg" class="btn btn-primary btn-lg mt-3">Découvrir la collection</a>
+    </div>
+</div>
+
+<div class="container mt-5" id="katalòg">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Nouveaux Arrivages</h2>
+        <span class="text-muted" th:text="${produits.size()} + ' produits disponibles'">0 produit</span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-lg-4 mb-4" th:each="p : ${produits}">
+            <div class="card shadow">
+                <div class="position-relative">
+                    <img th:src="@{'/images/' + ${p.imageNom}}" class="card-img-top" alt="Photo produit">
+                    <span class="position-absolute top-0 start-0 m-3 badge bg-dark" th:text="${p.categorie}">Catégorie</span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title fw-bold" th:text="${p.nom}">Nom Produit</h5>
+                   
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                       <span class="price-tag" th:text="'$' + ${p.prix}">$0</span>
+                        <span class="badge bg-light text-dark border">Size: <span th:text="${p.size}">M</span></span>
+                    </div>
+                    
+                    <hr>
+                    <a th:href="@{/paiement/checkout/{id}(id=${p.id})}" class="btn btn-primary w-100 fw-bold">
+                        <i class="fas fa-cart-plus me-2"></i>Faites vos achats
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-12 text-center py-5" th:if="${produits.isEmpty()}">
+            <i class="fas fa-box-open fa-4x text-muted mb-3"></i>
+            <h3>Aucun produit n'est disponible pour le moment.</h3>
+            <a th:href="@{/produits/nouveau}" class="btn btn-link">Cliquer ici pour ajouter votre premier produit.</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container text-center">
+        <p class="mb-0">&copy; 2026 Djoune Store - Tous droits réservés.</p>
+        <div class="mt-2">
+            <i class="fab fa-facebook fa-lg mx-2"></i>
+            <i class="fab fa-instagram fa-lg mx-2"></i>
+            <i class="fab fa-whatsapp fa-lg mx-2"></i>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

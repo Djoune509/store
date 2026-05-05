@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Finaliser l'achat - Djoune Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; padding-top: 50px; }
+        .checkout-box { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .info-paiement { display: none; margin-top: 15px; padding: 15px; border-radius: 10px; font-size: 0.9rem; }
+        .form-control:focus { border-color: #ff4757; box-shadow: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="checkout-box">
+                <h2 class="fw-bold mb-4">Détails de la commande</h2>
+                
+                <div class="alert alert-info shadow-sm">
+                    <p class="mb-1">Produit: <strong th:text="${produit.nom}">Nom</strong></p>
+                    <p class="mb-0">Prix: <strong th:text="${produit.prix} + ' USD'">0.00</strong></p>
+                </div>
+
+                <form th:action="@{/paiement/traiter}" method="post">
+                    <input type="hidden" name="produitId" th:value="${produit.id}">
+
+                    <div class="mb-3">
+                        <label class="form-label">Votre Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="exemple@gmail.com" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Adresse de livraison</label>
+                        <input type="text" name="adresse" class="form-control" placeholder="Numéro, Rue, Ville" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label font-weight-bold">Méthode de paiement</label>
+                        <select id="methodeSelect" name="methode" class="form-select" required onchange="afficherInfosPaiement()">
+                            <option value="" disabled selected>Choisir une option...</option>
+                            <option value="moncash">MonCash (Haïti)</option>
+                            <option value="virement">Virement Bancaire</option>
+                            <option value="livraison">Paiement à la livraison</option>
+                        </select>
+                    </div>
+
+                    <div id="box-moncash" class="info-paiement alert alert-danger border-danger">
+                        <i class="fas fa-mobile-alt me-2"></i> <strong>Paiement MonCash :</strong><br>
+                        Envoyez le paiement sur : <strong>+509 4921-8512</strong> (St Hilaire Medjine)<br><br>
+                        <label class="form-label text-dark small">Entrez votre numéro MonCash :</label>
+                        <input type="text" id="inputMoncash" name="numeroClient" class="form-control" placeholder="+509 3XXX-XXXX">
+                    </div>
+
+                    <div id="box-virement" class="info-paiement alert alert-primary border-primary">
+                        <i class="fas fa-university me-2"></i> <strong>Virement Bancaire :</strong><br>
+                        Compte : <strong>1234-5678-9012</strong> (Unibank - Djoune Store)<br><br>
+                        <label class="form-label text-dark small">Votre numéro de compte ou référence :</label>
+                        <input type="text" id="inputVirement" name="referenceVirement" class="form-control" placeholder="Numéro de compte ou transaction">
+                    </div>
+
+                    <button type="submit" class="btn btn-danger w-100 fw-bold py-2 mt-3 shadow">
+                        Confirmer le paiement
+                    </button>
+                </form>
+                
+                <div class="text-center mt-3">
+                    <a href="/" class="text-muted text-decoration-none small">Annuler et retourner</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function afficherInfosPaiement() {
+    const select = document.getElementById('methodeSelect');
+    const boxMoncash = document.getElementById('box-moncash');
+    const boxVirement = document.getElementById('box-virement');
+    
+    boxMoncash.style.display = 'none';
+    boxVirement.style.display = 'none';
+    
+    document.getElementById('inputMoncash').required = false;
+    document.getElementById('inputVirement').required = false;
+
+    if (select.value === 'moncash') {
+        boxMoncash.style.display = 'block';
+        document.getElementById('inputMoncash').required = true;
+    } else if (select.value === 'virement') {
+        boxVirement.style.display = 'block';
+        document.getElementById('inputVirement').required = true;
+    }
+}
+</script>
+
+</body>
+</html>
